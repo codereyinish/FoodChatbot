@@ -3,11 +3,17 @@ from fastapi import FastAPI , Request #Request to validate type hint of JSON req
 from pydantic import BaseModel
 from typing import Any, Dict, List #for type hints
 
+from collections import Counter
 import dbhelper
 app = FastAPI()
 
 #Helper functions for each intent
 
+
+in_progress_order = {
+    "session_id_1": {"pizza" :2},
+    "session_id_2": {"MangoLassi" : 3}
+}
 def handle_order_add(parameters:Dict[str, Any], session_id:str) -> Dict[str, Any]:
     item =  parameters.get("food_items", [])
     quantities = parameters.get("quantity",[])
@@ -15,7 +21,13 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str) -> Dict[str, Any
         fulfillmentText = "Sorry I didn't understand. Can you please specify the food items and quantity properly please'"
     #later try to add multiple items together , 1 lassi and 2 momo
     else:
-        fulfillmentText = f"Added {quantities} of {item} to your order. (session: {session_id},)"
+       new_food_dictionary = dict(zip(item, quantities))
+    if session_id in in_progress_order:
+        in_progress_order[session_id] = dict(Counter(in_progress_order.get(session_id, {})) + Counter(new_food_dictionary))
+    else:
+        in_progress_order[session_id]= new_food_dictionary
+    fulfillmentText = f" Successfully Added {item} {quantities}"
+    print("🧾 Current in_progress_order:", in_progress_order)
     return{
         "fulfillmentText": fulfillmentText
     }
@@ -46,11 +58,8 @@ async def handle_request(request: Request):
     intent = req_json.get("queryResult", {}).get("intent", {}).get("displayName")
     parameters = req_json.get("queryResult", {}).get("parameters", {})
 
-    session_id = ""
-    output_context = req_json.get("outputContexts", [])
-    if output_context:
-        context_name = output_context.get("name", "")
-        session_id = context_name.split("/sessions")[1].split("/")[0] if "/sessions/" in context_name else ""
+    session_path = req_json.get("session", "")
+    session_id = session_path.split("/sessions/")[-1]
 
     intent_handle_dict = {
     "Order.Add-context:ongoing-order" : handle_order_add,
