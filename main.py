@@ -14,20 +14,28 @@ in_progress_order = {
     "session_id_1": {"pizza" :2},
     "session_id_2": {"MangoLassi" : 3}
 }
-def handle_order_add(parameters:Dict[str, Any], session_id:str) -> Dict[str, Any]:
+def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) -> Dict[str, Any]:
     item =  parameters.get("food_items", [])
     quantities = parameters.get("quantity",[])
+    print(query_text)
     if len(item)!= len(quantities):
         fulfillmentText = "Sorry I didn't understand. Can you please specify the food items and quantity properly please'"
     #later try to add multiple items together , 1 lassi and 2 momo
     else:
        new_food_dictionary = dict(zip(item, quantities))
     if session_id in in_progress_order:
-        in_progress_order[session_id] = dict(Counter(in_progress_order.get(session_id, {})) + Counter(new_food_dictionary))
+        #Check if user is trying to make an update or add more
+        update_keywords = ["change", "instead", "make", "replace", "no", "not", "update", "only"]
+        if any(word in query_text for word in update_keywords):
+            #REPLACEMENT
+            in_progress_order[session_id].update(new_food_dictionary)
+        else:
+            #INCREMENT
+            in_progress_order[session_id] = dict(Counter(in_progress_order.get(session_id, {})) + Counter(new_food_dictionary))  # use Counter when we want to comnbine multiple key's values together
     else:
         in_progress_order[session_id]= new_food_dictionary
     fulfillmentText = f" Successfully Added {item} {quantities}"
-    print("🧾 Current in_progress_order:", in_progress_order)
+    print("🧾 Current in_progress_order:", in_progress_order) #for debugging
     return{
         "fulfillmentText": fulfillmentText
     }
@@ -57,6 +65,7 @@ async def handle_request(request: Request):
 
     intent = req_json.get("queryResult", {}).get("intent", {}).get("displayName")
     parameters = req_json.get("queryResult", {}).get("parameters", {})
+    query_text = req_json.get("queryResult", {}).get("queryText", "")
 
     session_path = req_json.get("session", "")
     session_id = session_path.split("/sessions/")[-1]
@@ -68,7 +77,7 @@ async def handle_request(request: Request):
     "Order.complete-context:ongoing_order": handle_order_complete
     }
 
-    return intent_handle_dict[intent](parameters, session_id)
+    return intent_handle_dict[intent](parameters, session_id, query_text)
 
 
 
