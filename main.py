@@ -4,8 +4,11 @@ from pydantic import BaseModel
 from typing import Any, Dict, List #for type hints
 
 from collections import Counter
+import generichelper
+
 import dbhelper
 app = FastAPI()
+
 
 #Helper functions for each intent
 
@@ -34,7 +37,8 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) 
             in_progress_order[session_id] = dict(Counter(in_progress_order.get(session_id, {})) + Counter(new_food_dictionary))  # use Counter when we want to comnbine multiple key's values together
     else:
         in_progress_order[session_id]= new_food_dictionary
-    fulfillmentText = f" Successfully Added {item} {quantities}"
+    order_str = generichelper.get_str_from_food_dict(in_progress_order[session_id])
+    fulfillmentText =  f"So far you have: {order_str}. Do you need anything else?"
     print("🧾 Current in_progress_order:", in_progress_order) #for debugging
     return{
         "fulfillmentText": fulfillmentText
