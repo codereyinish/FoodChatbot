@@ -95,6 +95,13 @@ Any]:
 
 
 
+def handle_order_reset(session_id:str):
+    #Clear all items from given current session
+    # print(in_progress_order[session_id])
+    in_progress_order[session_id].clear()
+    # print("after")
+    # print(in_progress_order[session_id])
+
 def handle_order_track(parameters: Dict[str, Any], session_id:str)-> Dict[str, Any]:
     pass
 
@@ -102,12 +109,6 @@ def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str
     pass
 
 
-def handle_order_reset(session_id:str):
-    #Clear all items from given current session
-    print(in_progress_order[session_id])
-    in_progress_order[session_id].clear()
-    print("after")
-    print(in_progress_order[session_id])
 
 #Main WEBHOOK HANDLER
 
@@ -140,6 +141,12 @@ async def handle_request(request: Request):
         return intent_handle_dict[intent](session_id)
     else:
         return intent_handle_dict[intent](parameters, session_id)
+
+
+
+
+
+
 
 
 
