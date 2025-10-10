@@ -9,9 +9,11 @@ def get_str_from_food_dict(food_dict:Dict[str,Any]):
     # 1.0 , not [1]
 def NormalizeVariable(item, quantities):
     if isinstance(item, str):
-        item = [item]
+        item = [] if item.strip()== "" else [item]
     if isinstance(quantities, (int, float)):
         quantities = [quantities]
+    elif isinstance(quantities, str):
+        quantities = [] if quantities.strip() == "" else [quantities]
     return item,quantities  #return tuple
 
 def ReturnFulfillmentMessage(order_dict):
