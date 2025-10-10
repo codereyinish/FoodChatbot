@@ -39,26 +39,54 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) 
     return generichelper.ReturnFulfillmentMessage(in_progress_order[session_id])
 
 
-def handle_order_remove(parameters: Dict[str, Any], session_id:str)-> Dict[str, Any]:
+def handle_order_remove(parameters: Dict[str, Any], session_id:str, query_text:str, all_params_present:bool)-> Dict[
+    str,
+Any]:
     item = parameters.get("items", [])
     quantities = parameters.get("quantity", [])
 
     # Normalize both variables
     item, quantities = generichelper.NormalizeVariable(item, quantities)
+    print (f"{quantities} hello")
+    print(f"{item}Bye")
+    keywords_for_all = ["all", "everything", "entire", "whole"]
 
+    if not item:
+        return{
+            "fulfillmentText" : "Which item do you want to remove? "
+        }
+    if not quantities:
+    # either we got "random char" or "all keyword" , we cant discard all keyword
+        if any(word in query_text for word in keywords_for_all):
+            #get existing quantity for  item from the session_dict
+            existing_items = in_progress_order.get(session_id, {})
+            quantities = [existing_items.get(i, 0) for i in item]
+            print (quantities)
+            return {
+                "fulfillmentText": "Thanks"
+            }
+        return {
+            "fulfillmentText": f"How many { ','.join(item)} you want to remove? "
+        }
+
+
+#Formality CHeck if multiple items entered together, every item should have corresponding quantities
     if len(item)!= len(quantities):
-        fulfillmentText = "Sorry I didn't understand. Can you please specify the food items and quantity properly please'"
-    else:
-        removable_item_dict = dict(zip(item,quantities))
+        return {
+            "fulfillmentText": "Sorry I didn't understand. Can you please specify the food items and quantity "
+                               "properly please'"
+        }
+
+    removable_item_dict = dict(zip(item,quantities))
         # print(removable_item_dict)
     #Remove items from a particular session_id
     if session_id in in_progress_order:
          in_progress_order[session_id] = dict(Counter(in_progress_order[session_id]) - Counter(removable_item_dict))
-    else:
-        return {
-            "FulfillmentText" : f"Sorry Session Expired or Not Found"
+         return generichelper.ReturnFulfillmentMessage(in_progress_order[session_id])
+    return {
+            "fulfillmentText" : f"Sorry Session Expired or Not Found"
         }
-    return generichelper.ReturnFulfillmentMessage(in_progress_order[session_id])
+
 
 
 def handle_order_track(parameters: Dict[str, Any], session_id:str)-> Dict[str, Any]:
@@ -80,6 +108,7 @@ async def handle_request(request: Request):
     intent = req_json.get("queryResult", {}).get("intent", {}).get("displayName")
     parameters = req_json.get("queryResult", {}).get("parameters", {})
     query_text = req_json.get("queryResult", {}).get("queryText", "")
+    all_params_present = req_json.get("queryResult", {}).get("allRequiredParamsPresent", False)
 
     session_path = req_json.get("session", "")
     session_id = session_path.split("/sessions/")[-1]
@@ -92,6 +121,8 @@ async def handle_request(request: Request):
     }
     if intent == "Order.Add-context:ongoing-order":
         return intent_handle_dict[intent](parameters, session_id, query_text)
+    elif intent == "Order.remove-context:ongoing-order":
+        return intent_handle_dict[intent](parameters, session_id, query_text, all_params_present)
     else:
         return intent_handle_dict[intent](parameters, session_id)
 
