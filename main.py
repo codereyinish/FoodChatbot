@@ -13,6 +13,8 @@ app = FastAPI()
 #Helper functions for each intent
 
 in_progress_order = {}
+
+
 def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) -> Dict[str, Any]:
     item =  parameters.get("food_items", [])
     quantities = parameters.get("quantity",[])
@@ -39,22 +41,34 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) 
     return generichelper.ReturnFulfillmentMessage(in_progress_order[session_id])
 
 
+
 def handle_order_remove(parameters: Dict[str, Any], session_id:str, query_text:str, all_params_present:bool)-> Dict[
     str,
 Any]:
+    print("YO")
+    print(in_progress_order)
     item = parameters.get("items", [])
     quantities = parameters.get("quantity", [])
 
     # Normalize both variables
     item, quantities = generichelper.NormalizeVariable(item, quantities)
-    print (f"{quantities} hello")
-    print(f"{item}Bye")
     keywords_for_all = ["all", "everything", "entire", "whole"]
 
+
+    #Remove items from a particular session_id
+    def removeItems():
+        removable_item_dict = dict(zip(item, quantities))
+        # print(removable_item_dict)
+        if session_id in in_progress_order:
+         in_progress_order[session_id] = dict(Counter(in_progress_order[session_id]) - Counter(removable_item_dict))
+         return generichelper.ReturnFulfillmentMessage(in_progress_order[session_id])
+
+    #CONDITION 1
     if not item:
         return{
             "fulfillmentText" : "Which item do you want to remove? "
         }
+    #CONDITION 2
     if not quantities:
     # either we got "random char" or "all keyword" , we cant discard all keyword
         if any(word in query_text for word in keywords_for_all):
@@ -62,9 +76,8 @@ Any]:
             existing_items = in_progress_order.get(session_id, {})
             quantities = [existing_items.get(i, 0) for i in item]
             print (quantities)
-            return {
-                "fulfillmentText": "Thanks"
-            }
+            return removeItems()
+
         return {
             "fulfillmentText": f"How many { ','.join(item)} you want to remove? "
         }
@@ -76,16 +89,9 @@ Any]:
             "fulfillmentText": "Sorry I didn't understand. Can you please specify the food items and quantity "
                                "properly please'"
         }
+    #CONDITION 3
+    return removeItems()
 
-    removable_item_dict = dict(zip(item,quantities))
-        # print(removable_item_dict)
-    #Remove items from a particular session_id
-    if session_id in in_progress_order:
-         in_progress_order[session_id] = dict(Counter(in_progress_order[session_id]) - Counter(removable_item_dict))
-         return generichelper.ReturnFulfillmentMessage(in_progress_order[session_id])
-    return {
-            "fulfillmentText" : f"Sorry Session Expired or Not Found"
-        }
 
 
 
@@ -96,6 +102,12 @@ def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str
     pass
 
 
+def handle_order_reset(session_id:str):
+    #Clear all items from given current session
+    print(in_progress_order[session_id])
+    in_progress_order[session_id].clear()
+    print("after")
+    print(in_progress_order[session_id])
 
 #Main WEBHOOK HANDLER
 
@@ -116,6 +128,7 @@ async def handle_request(request: Request):
     intent_handle_dict = {
     "Order.Add-context:ongoing-order" : handle_order_add,
     "Order.remove-context:ongoing-order": handle_order_remove,
+    "Order.reset-context:ongoing-order": handle_order_reset,
     "Order.track-context:ongoing-order" : handle_order_track,
     "Order.complete-context:ongoing_order": handle_order_complete
     }
@@ -123,6 +136,8 @@ async def handle_request(request: Request):
         return intent_handle_dict[intent](parameters, session_id, query_text)
     elif intent == "Order.remove-context:ongoing-order":
         return intent_handle_dict[intent](parameters, session_id, query_text, all_params_present)
+    elif intent == "Order.reset-context:ongoing-order":
+        return intent_handle_dict[intent](session_id)
     else:
         return intent_handle_dict[intent](parameters, session_id)
 
