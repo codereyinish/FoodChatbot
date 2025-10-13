@@ -6,6 +6,7 @@ from typing import Any, Dict, List #for type hints
 from collections import Counter
 import generichelper
 
+import dbOperations
 import dbhelper
 app = FastAPI()
 
@@ -106,7 +107,19 @@ def handle_order_track(parameters: Dict[str, Any], session_id:str)-> Dict[str, A
     pass
 
 def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str, Any]:
-    pass
+    if session_id not in in_progress_order:
+        return {
+            "fulfillmentText": "I'm having a trouble finding your order. Sorry! Can you place a new oMier please?"
+        }
+    else:
+        order = in_progress_order[session_id]
+        save_to_db(order)
+
+def save_to_db(order: dict):
+    #get next order_id from database
+    order_id = dbOperations.get_next_order_id()
+    for food_item, quantity in order.items():
+        dbOperations.insert_order_item( order_id, food_item, quantity)
 
 
 
