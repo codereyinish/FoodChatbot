@@ -95,7 +95,6 @@ Any]:
 
 
 
-
 def handle_order_reset(session_id:str):
     #Clear all items from given current session
     # print(in_progress_order[session_id])
