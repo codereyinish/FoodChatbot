@@ -7,7 +7,8 @@ from collections import Counter
 import generichelper
 
 import dbOperations
-import dbhelper
+
+
 app = FastAPI()
 
 
@@ -110,15 +111,32 @@ def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str
         return {
             "fulfillmentText": "I'm having a trouble finding your order. Sorry! Can you place a new oMier please?"
         }
-    else:
-        order = in_progress_order[session_id]
-        save_to_db(order)
+    order = in_progress_order[session_id]
+    order_id = save_to_db(order)
+    if order_id == -1:
+        return{
+            "fulfillmentText": "Sorry, I couldn't process your order due to a backend error. " \
+            "Please place a new order again"
+        }
+    #Insertion is successful so does trigger for total_price
+    order_total_price = dbOperations.get_total_order_price(order_id)
+    return{
+        "fulfillmentText":  f"Awesome. We have placed your order. "\
+                            f"Here is your order id # {order_id}. " \
+                            f"'Your order total is {order_total_price} which you can pay at the time of delivery!"
+        }
+
 
 def save_to_db(order: dict):
     #get next order_id from database
-    order_id = dbOperations.get_next_order_id()
+    next_order_id = dbOperations.get_next_order_id()
+    if next_order_id == -1:
+        return -1
     for food_item, quantity in order.items():
-        dbOperations.insert_order_item( order_id, food_item, quantity)
+       result =  dbOperations.insert_order_item( next_order_id, food_item, quantity)
+       if result == -1:
+           return -1
+       return next_order_id
 
 
 
