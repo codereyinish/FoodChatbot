@@ -1,13 +1,19 @@
 import mysql.connector
 global cnx
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 
 #Create the connection
 cnx = mysql.connector.connect(
-    host = "localhost",
-    user = "root",
-    password = "mju7MJU&",
-    database = "mb_eats"
+    host = os.getenv("host"),
+    user = os.getenv("user"),
+    password = os.getenv("db_password"),
+    database = os.getenv("database")
 )
+
+
 
 def insert_order_item(next_order_id:int, food_item:int, quantity:int):
     try:
