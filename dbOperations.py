@@ -102,3 +102,29 @@ def get_total_order_price(order_id):
         return -1
 
 
+def validateTrackID(track_id):
+    try:
+        cursor = cnx.cursor()
+        query = "Select * from order_tracking where order_id=%s"
+        cursor.execute(query,(track_id, ))
+        row = cursor.fetchone()
+        if not row:
+            return -1
+        else:
+            status = row[1]
+            return status
+
+    except mysql.connector.Error as err:
+        print(f"Error tracking the order: {err}")
+        return -1
+
+    except Exception as e:
+        print(f"🐞 Unexpected error: {e}")
+        return -1
+
+
+
+
+
+
+
