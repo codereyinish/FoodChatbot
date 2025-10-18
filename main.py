@@ -98,13 +98,27 @@ Any]:
 
 def handle_order_reset(session_id:str):
     #Clear all items from given current session
-    # print(in_progress_order[session_id])
     in_progress_order[session_id].clear()
-    # print("after")
-    # print(in_progress_order[session_id])
+    return{
+        "fulfillmentText": "Your cart is cleared."
+    }
 
-def handle_order_track(parameters: Dict[str, Any], session_id:str)-> Dict[str, Any]:
-    pass
+
+
+def handle_order_track( parameters: Dict[str, Any]):
+    track_id = parameters.get("order_id")
+    status = dbOperations.validateTrackID(track_id)
+    if status == -1:
+        return{
+                "fulfillmentText": "Hmm, it looks like there's no order linked to that tracking ID. Please enter the correct one."
+        }
+    return{
+        "fulfillmentText": f"Your order is {status}"
+    }
+
+
+
+
 
 def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str, Any]:
     if session_id not in in_progress_order:
@@ -122,8 +136,8 @@ def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str
     order_total_price = dbOperations.get_total_order_price(order_id)
     return{
         "fulfillmentText":  f"Awesome. We have placed your order. "\
-                            f"Here is your order id # {order_id}. " \
-                            f"'Your order total is {order_total_price} which you can pay at the time of delivery!"
+                            f"Here is your order id #{order_id}. " \
+                            f"'Your order total is ${order_total_price} which you can pay at the time of delivery!"
         }
 
 
@@ -160,7 +174,7 @@ async def handle_request(request: Request):
     "Order.Add-context:ongoing-order" : handle_order_add,
     "Order.remove-context:ongoing-order": handle_order_remove,
     "Order.reset-context:ongoing-order": handle_order_reset,
-    "Order.track-context:ongoing-order" : handle_order_track,
+    "order.track-context:ongoing-order" : handle_order_track,
     "Order.complete-context:ongoing_order": handle_order_complete
     }
     if intent == "Order.Add-context:ongoing-order":
@@ -169,6 +183,8 @@ async def handle_request(request: Request):
         return intent_handle_dict[intent](parameters, session_id, query_text, all_params_present)
     elif intent == "Order.reset-context:ongoing-order":
         return intent_handle_dict[intent](session_id)
+    elif intent == "order.track-context:ongoing-order":
+        return intent_handle_dict[intent](parameters)
     else:
         return intent_handle_dict[intent](parameters, session_id)
 
