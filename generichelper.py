@@ -23,3 +23,45 @@ def ReturnFulfillmentMessage(order_dict):
     return {
         "fulfillmentText": fulfillmentText
     }
+
+
+#Remove items from a particular session_id
+def removeItems(item, quantities, session_id, in_progress_order):
+    removable_item_dict = dict(zip(item, quantities))
+    if session_id not in in_progress_order:
+        return {
+            "fulfillmentText": "I having a trouble finding your order. Please place your order again"
+        }
+    # Else start deleting
+    order_dict = in_progress_order[session_id]
+    removedItems = []
+    absentItems = []
+    for item, qty_to_remove in removable_item_dict.items():
+        if item in order_dict:
+            if order_dict[item] > qty_to_remove:
+                order_dict[item] -= qty_to_remove
+            else:  # remove completely the item and its value
+                del order_dict[item]
+            removedItems.append(item)
+        else:
+            absentItems.append(item)
+
+    # BUILD THE MESSAGE telling about Deleted and Absent Items together in a Message
+    message_parts = []
+    if removedItems:
+        message_parts.append(f"Removed: {', '.join(removedItems)}")
+    if absentItems:
+        message_parts.append(f"Not in your order: {' ,'.join(absentItems)}")
+    if len(order_dict)!=0:
+        message_parts.append(f" Your cart now looks like this:  {showItems(order_dict)}")
+    else:
+        message_parts.append(f"Your cart is now empty")
+    return {
+        "fulfillmentText": " . ".join(message_parts)
+    }
+
+def showItems(order_dict):
+    joined_str = ", ".join(f"{int(q)} {i}"  for i, q in order_dict.items())
+    return joined_str
+
+
