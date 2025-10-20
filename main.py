@@ -44,11 +44,10 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) 
 
 
 
+
 def handle_order_remove(parameters: Dict[str, Any], session_id:str, query_text:str, all_params_present:bool)-> Dict[
     str,
 Any]:
-    print("YO")
-    print(in_progress_order)
     item = parameters.get("items", [])
     quantities = parameters.get("quantity", [])
 
@@ -57,19 +56,12 @@ Any]:
     keywords_for_all = ["all", "everything", "entire", "whole"]
 
 
-    #Remove items from a particular session_id
-    def removeItems():
-        removable_item_dict = dict(zip(item, quantities))
-        # print(removable_item_dict)
-        if session_id in in_progress_order:
-         in_progress_order[session_id] = dict(Counter(in_progress_order[session_id]) - Counter(removable_item_dict))
-         return generichelper.ReturnFulfillmentMessage(in_progress_order[session_id])
-
     #CONDITION 1
     if not item:
         return{
             "fulfillmentText" : "Which item do you want to remove? "
         }
+
     #CONDITION 2
     if not quantities:
     # either we got "random char" or "all keyword" , we cant discard all keyword
@@ -77,9 +69,8 @@ Any]:
             #get existing quantity for  item from the session_dict
             existing_items = in_progress_order.get(session_id, {})
             quantities = [existing_items.get(i, 0) for i in item]
-            print (quantities)
-            return removeItems()
-
+            return generichelper.removeItems(item, quantities, session_id, in_progress_order)
+        #if any random character entered like ("a" , "ermm" instead of valid integer for quantity)
         return {
             "fulfillmentText": f"How many { ','.join(item)} you want to remove? "
         }
@@ -92,7 +83,7 @@ Any]:
                                "properly please'"
         }
     #CONDITION 3
-    return removeItems()
+    return generichelper.removeItems(item, quantities, session_id, in_progress_order)
 
 
 
@@ -104,17 +95,19 @@ def handle_order_reset(session_id:str):
     }
 
 
+def save_to_db(order: dict):
+    #get next order_id from database
+    next_order_id = dbOperations.get_next_order_id()
+    if next_order_id == -1:
+        return -1
+    for food_item, quantity in order.items():
+       result =  dbOperations.insert_order_item( next_order_id, food_item, quantity)
+       print(f"{food_item} inserted")
+       if result == -1:
+           return -1
 
-def handle_order_track( parameters: Dict[str, Any]):
-    track_id = parameters.get("order_id")
-    status = dbOperations.validateTrackID(track_id)
-    if status == -1:
-        return{
-                "fulfillmentText": "Hmm, it looks like there's no order linked to that tracking ID. Please enter the correct one."
-        }
-    return{
-        "fulfillmentText": f"Your order is {status}"
-    }
+    return next_order_id
+
 
 
 
@@ -134,6 +127,8 @@ def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str
         }
     #Insertion is successful so does trigger for total_price
     order_total_price = dbOperations.get_total_order_price(order_id)
+    del in_progress_order[session_id] #Remove the order from the buffer storage since it has been already stroed in
+    # the database
     return{
         "fulfillmentText":  f"Awesome. We have placed your order. "\
                             f"Here is your order id #{order_id}. " \
@@ -141,16 +136,20 @@ def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str
         }
 
 
-def save_to_db(order: dict):
-    #get next order_id from database
-    next_order_id = dbOperations.get_next_order_id()
-    if next_order_id == -1:
-        return -1
-    for food_item, quantity in order.items():
-       result =  dbOperations.insert_order_item( next_order_id, food_item, quantity)
-       if result == -1:
-           return -1
-       return next_order_id
+
+
+
+def handle_order_track( parameters: Dict[str, Any]):
+    track_id = parameters.get("order_id")
+    status = dbOperations.validateTrackID(track_id)
+    if status == -1:
+        return{
+                "fulfillmentText": "Hmm, it looks like there's no order linked to that tracking ID. Please enter the correct one."
+        }
+    return{
+        "fulfillmentText": f"Your order is {status}"
+    }
+
 
 
 
@@ -202,16 +201,4 @@ async def handle_request(request: Request):
 
 
 
-# if intent_name == "order.track-context:ongoing-order":
-#     # response = {"fulfillmentText": "Your order is tracked"}
-#     try:
-#         order_id = int(parameters.get('order_id', 0))
-#     except ValueError:
-#         return{"fulfillment text": "Invalid Order Id"}
-#     order_status = dbhelper.get_order_status(order_id)
-#     if order_status:
-#         return{"fulfillmentText": f"Your order status is: {order_status}"}
-#     else: #if None is returned
-#         return {"fulfillmentText": "Order not found."}
-# pass
-# #Route functions based on intent
+
