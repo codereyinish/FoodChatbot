@@ -110,6 +110,19 @@ def save_to_db(order: dict):
 
 
 
+def handle_order_display(session_id):
+    if  session_id not in in_progress_order:
+        return {
+            "fulfillmentText": " Yo, I'm having a trouble finding your order. Sorry! Can you place a new order< please?"
+        }
+    order_dict = in_progress_order[session_id]
+    return{
+        "fulfillmentText": f"Your cart currently looks like this:  {generichelper.showItems(order_dict)} "
+    }
+
+        
+        
+
 
 
 
@@ -174,7 +187,8 @@ async def handle_request(request: Request):
     "Order.remove-context:ongoing-order": handle_order_remove,
     "Order.reset-context:ongoing-order": handle_order_reset,
     "order.track-context:ongoing-order" : handle_order_track,
-    "Order.complete-context:ongoing_order": handle_order_complete
+    "Order.complete-context:ongoing_order": handle_order_complete,
+    "Order.display-context:ongoing-order": handle_order_display
     }
     if intent == "Order.Add-context:ongoing-order":
         return intent_handle_dict[intent](parameters, session_id, query_text)
@@ -184,6 +198,8 @@ async def handle_request(request: Request):
         return intent_handle_dict[intent](session_id)
     elif intent == "order.track-context:ongoing-order":
         return intent_handle_dict[intent](parameters)
+    elif intent ==  "Order.display-context:ongoing-order":
+        return intent_handle_dict[intent](session_id)
     else:
         return intent_handle_dict[intent](parameters, session_id)
 
