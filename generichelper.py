@@ -65,3 +65,21 @@ def showItems(order_dict):
     return joined_str
 
 
+
+def validate_session_id_and_retrieve_order(session_id, in_progress_order):
+    if session_id not in in_progress_order:
+        return {
+            "fulfillmentText": "I'm having a trouble finding your order. Sorry! Can you place a new oMier please?"
+        }
+    order_dict = in_progress_order[session_id]
+    return order_dict
+
+
+def   check_item_in_the_order_list(order_dict, item):
+    #item is a list , not a dictionary so retrieve value from the list
+    if isinstance(item, list) and len(item)>0:#there must be a item
+        item = item[0]
+    return item in order_dict #if present , returns true , if not false
+
+
+
