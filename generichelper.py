@@ -69,7 +69,7 @@ def showItems(order_dict):
 def validate_session_id_and_retrieve_order(session_id, in_progress_order):
     if session_id not in in_progress_order:
         return {
-            "fulfillmentText": "I'm having a trouble finding your order. Sorry! Can you place a new oMier please?"
+            "fulfillmentText": "I'm having a trouble finding your order. Sorry! Can you place a new order please?"
         }
     order_dict = in_progress_order[session_id]
     return order_dict
@@ -86,6 +86,17 @@ def convert_list_to_string(List:list):
     return " , ".join(items for items in List)
 
 
+#Instead of asking track_id again, derive it from previous track.order context in output context
+def derive_track_id_from_output_context(req_json:dict):
+    output_contexts = req_json["queryResult"]["outputContexts"]
+
+    order_id = None
+    for ctx in output_contexts: #there will be list of multiple output contexts
+        if "track_context" in ctx["name"]:
+            order_id = ctx["parameters"].get("order_id")
+            break
+
+    return order_id  # 👉 2
 
 
 
