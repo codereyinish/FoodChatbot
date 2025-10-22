@@ -124,7 +124,31 @@ def validateTrackID(track_id):
         return -1
 
 
-9
+def extract_saved_order_from_db(track_id):
+    try:
+        cursor = cnx.cursor()
+        query = """
+        select m.name, o.quantity
+        from orders as o
+        join menu_items as m
+            on o.item_id = m.item_id
+        where o.order_id = %s         
+        """
+        cursor.execute(query, (track_id, ))
+        rows = cursor.fetchall()
+        cursor.close()
+        return rows
+
+    except mysql.connector.Error as err:
+        print(f"Error tracking the order: {err}")
+        return -1
+
+    except Exception as e:
+        print(f"🐞 Unexpected error: {e}")
+        return -1
+
+
+
 
 
 
