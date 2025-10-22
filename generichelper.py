@@ -78,8 +78,14 @@ def validate_session_id_and_retrieve_order(session_id, in_progress_order):
 def   check_item_in_the_order_list(order_dict, item):
     #item is a list , not a dictionary so retrieve value from the list
     if isinstance(item, list) and len(item)>0:#there must be a item
-        item = item[0]
+        item = item[0] #only for 1 item for now, convert list to the single string
     return item in order_dict #if present , returns true , if not false
+
+
+def convert_list_to_string(List:list):
+    return " , ".join(items for items in List)
+
+
 
 
 

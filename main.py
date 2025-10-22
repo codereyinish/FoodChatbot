@@ -21,11 +21,18 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) 
     item =  parameters.get("food_items", [])
     quantities = parameters.get("quantity",[])
 
-    #Normalize both variables
+    #Normalize both variables to remove "" for invalid item and quantity
     item, quantities = generichelper.NormalizeVariable(item, quantities)
-    print(query_text)
+    if len(item)==0:
+        return{
+            "fulfillmentText": "Which item you want to add?"
+        }
+
+
     if len(item)!= len(quantities):
-        fulfillmentText = "Sorry I didn't understand. Can you please specify the food items and quantity properly please'"
+        return{
+        "fulfillmentText" : "Sorry I didn't understand. Can you please specify the food items and quantity properly "}
+
     #later try to add multiple items together , 1 lassi and 2 momo
     else:
        new_food_dictionary = dict(zip(item, quantities))
@@ -45,6 +52,7 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) 
 
 
 
+
 def handle_order_remove(parameters: Dict[str, Any], session_id:str, query_text:str, all_params_present:bool)-> Dict[
     str,
 Any]:
@@ -57,9 +65,18 @@ Any]:
 
 
     #CONDITION 1
-    if not item:
+    if len(item) ==0:
         return{
             "fulfillmentText" : "Which item do you want to remove? "
+        }
+    order_dict = generichelper.validate_session_id_and_retrieve_order(session_id, in_progress_order)
+    result = generichelper.check_item_in_the_order_list(order_dict, item)
+    if not result:
+        return {
+            "fulfillmentText": f"{generichelper.convert_list_to_string(item)} isn’t in your cart. Please check the "
+                               f"name or "
+                               f"add it "
+                               f"first."
         }
 
     #CONDITION 2
@@ -111,15 +128,14 @@ def save_to_db(order: dict):
 
 
 def handle_order_display(session_id):
-    if  session_id not in in_progress_order:
+    order_dict = generichelper.validate_session_id_and_retrieve_order(session_id, in_progress_order)
+    if len(order_dict)!=-0:
         return {
-            "fulfillmentText": " Yo, I'm having a trouble finding your order. Sorry! Can you place a new order< please?"
+            "fulfillmentText": f"Your cart currently looks like this:  {generichelper.showItems(order_dict)} "
         }
-    order_dict = in_progress_order[session_id]
     return{
-        "fulfillmentText": f"Your cart currently looks like this:  {generichelper.showItems(order_dict)} "
+        "fulfillmentText": "Your cart is empty at the moment. 🪄 Add something tasty to get started!"
     }
-
         
         
 
@@ -127,12 +143,8 @@ def handle_order_display(session_id):
 
 
 def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str, Any]:
-    if session_id not in in_progress_order:
-        return {
-            "fulfillmentText": "I'm having a trouble finding your order. Sorry! Can you place a new oMier please?"
-        }
-    order = in_progress_order[session_id]
-    order_id = save_to_db(order)
+    order_dict = generichelper.validate_session_id_and_retrieve_order(session_id, in_progress_order)
+    order_id = save_to_db(order_dict)
     if order_id == -1:
         return{
             "fulfillmentText": "Sorry, I couldn't process your order due to a backend error. " \

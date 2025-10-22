@@ -108,6 +108,7 @@ def validateTrackID(track_id):
         query = "Select * from order_tracking where order_id=%s"
         cursor.execute(query,(track_id, ))
         row = cursor.fetchone()
+        cursor.close()
         if not row:
             return -1
         else:
@@ -122,6 +123,8 @@ def validateTrackID(track_id):
         print(f"🐞 Unexpected error: {e}")
         return -1
 
+
+9
 
 
 
