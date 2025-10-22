@@ -129,7 +129,7 @@ def save_to_db(order: dict):
 
 def handle_order_display(session_id):
     order_dict = generichelper.validate_session_id_and_retrieve_order(session_id, in_progress_order)
-    if len(order_dict)!=-0:
+    if len(order_dict)!=0:
         return {
             "fulfillmentText": f"Your cart currently looks like this:  {generichelper.showItems(order_dict)} "
         }
@@ -166,13 +166,42 @@ def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str
 
 def handle_order_track( parameters: Dict[str, Any]):
     track_id = parameters.get("order_id")
+    #Validate whether the track_id is int or not
+    try:
+        track_id = int(track_id)  # raises ValueError...if it isnt empty string then it will get typecast else
+        # ValueError
+    except ValueError:
+        return{
+            "fulfillmentText": "Enter a valid track id number"
+        }  # ✅ safely caught
+    #CHeck whether the track_id exist in the database or not
     status = dbOperations.validateTrackID(track_id)
+    print(f"{status}status")
     if status == -1:
         return{
                 "fulfillmentText": "Hmm, it looks like there's no order linked to that tracking ID. Please enter the correct one."
         }
     return{
         "fulfillmentText": f"Your order is {status}"
+    }
+
+
+def handle_tracked_order_display(req_json):
+    track_id = generichelper.derive_track_id_from_output_context(req_json)
+    #if unable to retrieve the order_id from  output context, prompt again for order_id
+    if not track_id:
+        return{
+        "fulfillmentText": "Yo, Enter the track_id again "
+        }
+    total_order_price = dbOperations.get_total_order_price(track_id)
+    #get item names and corresponding quantities
+    rows = dbOperations.extract_saved_order_from_db(track_id)
+    joined_str = ", ".join(f" {qty} {name}" for  name, qty in rows)
+    final_message = (f"Your order with track_id #{track_id} consists of {joined_str} and total price is "
+                     f"${total_order_price} ")
+    print(final_message)
+    return{
+        "fulfillmentText":final_message
     }
 
 
@@ -200,7 +229,8 @@ async def handle_request(request: Request):
     "Order.reset-context:ongoing-order": handle_order_reset,
     "order.track-context:ongoing-order" : handle_order_track,
     "Order.complete-context:ongoing_order": handle_order_complete,
-    "Order.display-context:ongoing-order": handle_order_display
+    "Order.display-context:ongoing-order": handle_order_display,
+    "Order.display_tracked_items": handle_tracked_order_display
     }
     if intent == "Order.Add-context:ongoing-order":
         return intent_handle_dict[intent](parameters, session_id, query_text)
@@ -212,8 +242,11 @@ async def handle_request(request: Request):
         return intent_handle_dict[intent](parameters)
     elif intent ==  "Order.display-context:ongoing-order":
         return intent_handle_dict[intent](session_id)
+    elif intent == "Order.display_tracked_items":
+        return intent_handle_dict[intent](req_json)
     else:
         return intent_handle_dict[intent](parameters, session_id)
+
 
 
 
