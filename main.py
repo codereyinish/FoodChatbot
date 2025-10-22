@@ -2,17 +2,13 @@
 from fastapi import FastAPI , Request #Request to validate type hint of JSON request
 from pydantic import BaseModel
 from typing import Any, Dict, List #for type hints
-
 from collections import Counter
 import generichelper
-
 import dbOperations
 
 
 app = FastAPI()
 
-
-#Helper functions for each intent
 
 in_progress_order = {}
 
@@ -23,6 +19,7 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) 
 
     #Normalize both variables to remove "" for invalid item and quantity
     item, quantities = generichelper.NormalizeVariable(item, quantities)
+
     if len(item)==0:
         return{
             "fulfillmentText": "Which item you want to add?"
@@ -52,7 +49,6 @@ def handle_order_add(parameters:Dict[str, Any], session_id:str, query_text:str) 
 
 
 
-
 def handle_order_remove(parameters: Dict[str, Any], session_id:str, query_text:str, all_params_present:bool)-> Dict[
     str,
 Any]:
@@ -64,7 +60,7 @@ Any]:
     keywords_for_all = ["all", "everything", "entire", "whole"]
 
 
-    #CONDITION 1
+    #CONDITION #1 CHECK VALIDITY OF ITEMS
     if len(item) ==0:
         return{
             "fulfillmentText" : "Which item do you want to remove? "
@@ -79,7 +75,7 @@ Any]:
                                f"first."
         }
 
-    #CONDITION 2
+    #CONDITION#2 CHECK VALIDITY OF QUANTITIES
     if not quantities:
     # either we got "random char" or "all keyword" , we cant discard all keyword
         if any(word in query_text for word in keywords_for_all):
@@ -140,8 +136,6 @@ def handle_order_display(session_id):
         
 
 
-
-
 def handle_order_complete(parameters: Dict[str, Any], session_id:str)-> Dict[str, Any]:
     order_dict = generichelper.validate_session_id_and_retrieve_order(session_id, in_progress_order)
     order_id = save_to_db(order_dict)
@@ -184,6 +178,7 @@ def handle_order_track( parameters: Dict[str, Any]):
     return{
         "fulfillmentText": f"Your order is {status}"
     }
+
 
 
 def handle_tracked_order_display(req_json):
