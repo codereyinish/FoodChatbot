@@ -1,81 +1,70 @@
-<div id="top">
 
 <!-- HEADER STYLE: CLASSIC -->
-<div align="center">
+<p align="center">
 
-<img src="readmeai/assets/logos/purple.svg" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
+ <img src="https://github.com/codereyinish/FoodChatbot/blob/main/assets/ChatGPT Image Oct 27, 2025 at 12_07_26 AM.png" width="300" alt="project-logo" style="border-radius: 15px; background-color: black; padding: 10px;">
 
-# FOODCHATBOT.GIT
+<p align="center">
+    <h1 align="center">Not an ordinary chatbot</h1>
+</p>
+<p align="center">
+    <em>Order food effortlessly with intelligent chatbot assistance.</em>
+</p>
 
-<em>Order food effortlessly with intelligent chatbot assistance.</em>
+<p align="center">
+	<img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="license">
+	<img src="https://img.shields.io/github/last-commit/codereyinish/FoodChatbot?style=for-the-badge&logo=git&logoColor=white&color=2196F3" alt="last-commit">
+	<img src="https://img.shields.io/github/languages/top/codereyinish/FoodChatbot?style=for-the-badge&color=FF9800" alt="repo-top-language">
+	<img src="https://img.shields.io/github/languages/count/codereyinish/FoodChatbot?style=for-the-badge&color=9C27B0" alt="repo-language-count">
+</p>
 
-<!-- BADGES -->
-<img src="https://img.shields.io/github/license/codereyinish/FoodChatbot.git?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
-<img src="https://img.shields.io/github/last-commit/codereyinish/FoodChatbot.git?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-<img src="https://img.shields.io/github/languages/top/codereyinish/FoodChatbot.git?style=default&color=0080ff" alt="repo-top-language">
-<img src="https://img.shields.io/github/languages/count/codereyinish/FoodChatbot.git?style=default&color=0080ff" alt="repo-language-count">
+<em>Developed with the software and tools below.</em>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/pyngrok-1DA1F2?style=flat&logo=ngrok&logoColor=white" alt="pyngrok">
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/Dialogflow-FF9800?style=flat&logo=dialogflow&logoColor=white" alt="Dialogflow">
+  <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white" alt="GitHub">
+  <img src="https://img.shields.io/badge/PyCharm-21D789?style=flat&logo=pycharm&logoColor=white" alt="PyCharm">
+  <img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=notion&logoColor=white" alt="Notion">
+</p>
 
-<!-- default option, no dependency badges. -->
 
-
-<!-- default option, no dependency badges. -->
-
-</div>
 <br>
 
----
+<br><!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary><br>
 
-## Table of Contents
+[![🏁 Overview](https://img.shields.io/badge/🏁-Overview-blue)](#-overview)  
+[![📂 Repository Structure](https://img.shields.io/badge/📂-Repository%20Structure-green)](#-repository-structure)  
+[![🧠 Modules](https://img.shields.io/badge/🧠-Modules-yellow)](#-modules)  
+[![🚀 Getting Started](https://img.shields.io/badge/🚀-Getting%20Started-orange)](#-getting-started)  
+&nbsp;&nbsp;&nbsp;&nbsp;[![🧰 Installation](https://img.shields.io/badge/🧰-Installation-lightgrey)](#-installation)  
+&nbsp;&nbsp;&nbsp;&nbsp;[![⚡ Usage](https://img.shields.io/badge/⚡-Usage-lightgrey)](#-usage)  
+[![🛣️ Project Roadmap](https://img.shields.io/badge/🛣️-Project%20Roadmap-9cf)](#-project-roadmap)  
+[![🤝 Contributing](https://img.shields.io/badge/🤝-Contributing-ff69b4)](#-contributing)  
+[![📜 License](https://img.shields.io/badge/📜-License-lightblue)](#-license)  
+[![🌟 Acknowledgments](https://img.shields.io/badge/🌟-Acknowledgments-yellowgreen)](#-acknowledgments)
 
-- [Table of Contents](#table-of-contents)
-- [Overview](#overview)
-- [Features](#features)
-- [Project Structure](#project-structure)
-    - [Project Index](#project-index)
-- [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Usage](#usage)
-    - [Testing](#testing)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+</details>
 
----
+<hr>
+</details>
 
-## Overview
+<hr>
 
-FoodChatbot.git simplifies the creation and management of a food ordering chatbot with a robust backend.
+## 🏁 Overview
 
-**Why FoodChatbot.git?**
+KhajaG is a lightweight food ordering chatbot built using Dialogflow ES, FastAPI , ngrok, and a local MySQL database.
+The system connects Dialogflow intents to a FastAPI backend through a secure ngrok tunnel, enabling real-time order handling and database interaction.
 
-This project streamlines the development of food ordering chatbots, offering key features such as:
 
-- **🔍 Seamless Package Management:** Define dependencies effortlessly for smooth package handling.
-- **🚀 Efficient Database Schema:** Automated calculations via triggers for streamlined operations.
-- **💾 Quick Database Setup:** SQL dump files for easy database initialization.
-- **🌐 FastAPI-based Backend:** Rapid development of a responsive chatbot interface.
 
----
 
-## Features
-
-|      | Component       | Details                              |
-| :--- | :-------------- | :----------------------------------- |
-| ⚙️  | **Architecture**  | <ul><li>Follows a **MVC** design pattern</li><li>Separation of concerns between models, views, and controllers</li></ul> |
-| 🔩 | **Code Quality**  | <ul><li>Consistent code formatting using **Black**</li><li>Extensive use of type hints with **Pydantic** for data validation</li></ul> |
-| 📄 | **Documentation** | <ul><li>Comprehensive inline code comments explaining complex logic</li><li>README.md with setup instructions and API endpoints documented</li></ul> |
-| 🔌 | **Integrations**  | <ul><li>Integration with **MySQL** database using **mysql-connector-python**</li><li>API endpoints exposed using **FastAPI** framework</li></ul> |
-| 🧩 | **Modularity**    | <ul><li>Modular structure with reusable components like **exceptiongroup** for error handling</li><li>Separate modules for different functionalities like user authentication, food recommendation</li></ul> |
-| 🧪 | **Testing**       | <ul><li>Unit tests for critical functions using **pytest**</li><li>Integration tests for API endpoints using **pytest** and **FastAPI TestClient**</li></ul> |
-| ⚡️  | **Performance**   | <ul><li>Asynchronous handling of requests using **FastAPI** and **uvicorn** for improved performance</li><li>Caching mechanisms implemented for frequently accessed data</li></ul> |
-| 🛡️ | **Security**      | <ul><li>Input validation using **Pydantic** to prevent injection attacks</li><li>Secure handling of sensitive data like passwords using environment variables</li></ul> |
-| 📦 | **Dependencies**  | <ul><li>Dependencies managed using **pip** and **conda** with clear specifications in **requirements.txt** and **environment.yml**</li><li>Key dependencies include **FastAPI**, **Pydantic**, **mysql-connector-python**</li></ul> |
-
----
-
-## Project Structure
+## 📂 Repository Structure
 
 ```sh
 └── FoodChatbot.git/
@@ -92,7 +81,7 @@ This project streamlines the development of food ordering chatbots, offering key
     └── requirements.txt
 ```
 
-### Project Index
+### 🧠 Modules
 
 <details open>
 	<summary><b><code>FOODCHATBOT.GIT/</code></b></summary>
@@ -196,103 +185,134 @@ This project streamlines the development of food ordering chatbots, offering key
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
-### Prerequisites
+### 🧭 Prerequisites
 
-This project requires the following dependencies:
+Before running the project, make sure you have:
 
-- **Programming Language:** SQL
-- **Package Manager:** Pip, Conda
+- **Programming Language:** SQL  
+- **Package Manager:** `pip` or `conda`  
+- **Python Version:** 3.10 or higher  
+- **Database:** MySQL (installed and running locally or remotely)
 
-### Installation
+> 💡 **Tip:** Make sure MySQL service is running before starting the app.
 
-Build FoodChatbot.git from the source and intsall dependencies:
 
-1. **Clone the repository:**
+## 🧰 Installation Guide
+
+Build **FoodChatbot** from the source and set up the environment step by step 🧭
+
+---
+
+1. **Clone the Repository:**
 
     ```sh
     ❯ git clone https://github.com/codereyinish/FoodChatbot.git
     ```
 
-2. **Navigate to the project directory:**
+2. **Navigate to the Project Folder:**
 
     ```sh
-    ❯ cd FoodChatbot.git
+    ❯ cd FoodChatbot
     ```
 
-3. **Install the dependencies:**
+3. **Install the Dependencies:**
 
-<!-- SHIELDS BADGE CURRENTLY DISABLED -->
-	<!-- [![pip][pip-shield]][pip-link] -->
-	<!-- REFERENCE LINKS -->
-	<!-- [pip-shield]: None -->
-	<!-- [pip-link]: None -->
+    **Using pip:**
+    ```sh
+    ❯ pip install -r requirements.txt
+    ```
 
-	**Using [pip](None):**
+    **Using conda:**
+    ```sh
+    ❯ conda env create -f environment.yml
+    ❯ conda activate chatbot_env
+    ```
 
-	```sh
-	❯ echo 'INSERT-INSTALL-COMMAND-HERE'
-	```
-<!-- SHIELDS BADGE CURRENTLY DISABLED -->
-	<!-- [![conda][conda-shield]][conda-link] -->
-	<!-- REFERENCE LINKS -->
-	<!-- [conda-shield]: None -->
-	<!-- [conda-link]: None -->
+4. **Set Up MySQL Database 🛢️**
 
-	**Using [conda](None):**
+    - Make sure MySQL is installed and running.  
+    - Create a new database:
+    ```sql
+    CREATE DATABASE mb_eats;
+    ```
+    - Import the schema file:
+    ```sh
+    ❯ mysql -u root -p mb_eats < database/schema.sql
+    ```
+    - Create a `.env` file in the project root:
+    ```env
+    host=localhost
+    user=root
+    db_password=yourpassword
+    database=mb_eats
+    ```
 
-	```sh
-	❯ echo 'INSERT-INSTALL-COMMAND-HERE'
-	```
+    > 💡 **Tip:** Keep your `.env` file secure and never commit it to GitHub.
 
-### Usage
+5. **Set Up Ngrok (Optional for Webhooks) 🌐**
 
-Run the project with:
+    - Download and install [ngrok](https://ngrok.com)  
+    - Authenticate your ngrok account:
+    ```sh
+    ❯ ngrok config add-authtoken YOUR_TOKEN
+    ```
+    - Run ngrok to expose your FastAPI server:
+    ```sh
+    ❯ ngrok http 8000
+    ```
+    - Copy the **Forwarding URL** (e.g., `https://xxxx.ngrok.io`) and use it as your webhook URL in Dialogflow.
 
-**Using [pip](None):**
+ ---
+
+### ⚡ Usage
+
+Run the project locally:
+
+**Using pip: / conda: **
 ```sh
-echo 'INSERT-RUN-COMMAND-HERE'
+❯ uvicorn app.main:app --reload
 ```
-**Using [conda](None):**
-```sh
-echo 'INSERT-RUN-COMMAND-HERE'
-```
-
-### Testing
-
-Foodchatbot.git uses the {__test_framework__} test framework. Run the test suite with:
-
-**Using [pip](None):**
-```sh
-echo 'INSERT-TEST-COMMAND-HERE'
-```
-**Using [conda](None):**
-```sh
-echo 'INSERT-TEST-COMMAND-HERE'
-```
-
 ---
 
-## Roadmap
+## 🛣️ Project Roadmap]
+- [🟠] **`Task 2`**: Deploy backend to **Google Cloud**  
+  - Use **Cloud Run** or **App Engine**  
+  - Connect to **Cloud SQL (MySQL)**  
+  - Set up CI/CD  
+  - Replace ngrok with secure HTTPS endpoint
 
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
-- [ ] **`Task 2`**: Implement feature two.
-- [ ] **`Task 3`**: Implement feature three.
+- [🟡] **`Task 3`**: Move from **Dialogflow ES** to **Dialogflow CX**  
+  - Better flow handling & state management  
+  - Advanced routing and fallback control
 
+- [🔵] **`Task 4`**: Build a **standalone chatbot widget**  
+  - Website & app integration  
+  - Branding support & live order tracking
+
+- [⚡] **`Task 5`**: Scale for production  
+  - Logging & monitoring  
+  - Multi-tenant support  
+  - Performance & security upgrades
 ---
 
-## Contributing
+## 🤝 Contributing
 
-- **💬 [Join the Discussions](https://github.com/codereyinish/FoodChatbot.git/discussions)**: Share your insights, provide feedback, or ask questions.
-- **🐛 [Report Issues](https://github.com/codereyinish/FoodChatbot.git/issues)**: Submit bugs found or log feature requests for the `FoodChatbot.git` project.
-- **💡 [Submit Pull Requests](https://github.com/codereyinish/FoodChatbot.git/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+Contributions are always welcome to make **FoodChatbot** better 🚀  
+If you want to be part of this journey of building a **Chatbot Developer Agency**, you can **DM me** 💬
+
+- 🐛 **[Report Issues](https://github.com/codereyinish/FoodChatbot.git/issues)** — Found a bug or want a new feature.  
+- 💡 **[Submit Pull Requests](https://github.com/codereyinish/FoodChatbot.git/blob/main/CONTRIBUTING.md)** — Contribute improvements.  
+- 💬 **[Join Discussions](https://github.com/codereyinish/FoodChatbot.git/discussions)** — Share ideas, ask questions, or give feedback.
+
+---
 
 <details closed>
-<summary>Contributing Guidelines</summary>
+<summary>📌 Contributing Guidelines</summary>
 
-1. **Fork the Repository**: Start by forking the project repository to your github account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
+1. **Fork the Repository** to your GitHub account.  
+2. **Clone Locally**:
    ```sh
    git clone https://github.com/codereyinish/FoodChatbot.git
    ```
@@ -314,32 +334,46 @@ echo 'INSERT-TEST-COMMAND-HERE'
 </details>
 
 <details closed>
-<summary>Contributor Graph</summary>
+<summary>👥 Contributor Graph</summary>
 <br>
-<p align="left">
-   <a href="https://github.com{/codereyinish/FoodChatbot.git/}graphs/contributors">
-      <img src="https://contrib.rocks/image?repo=codereyinish/FoodChatbot.git">
+<p align="center">
+   <a href="https://github.com/codereyinish/FoodChatbot/graphs/contributors">
+      <img src="https://contrib.rocks/image?repo=codereyinish/FoodChatbot" alt="Contributors Graph">
    </a>
+</p>
+
+<p align="center">
+   💖 A big thank you to all the amazing contributors who helped shape this project!
+</p>
+
+<p align="center">
+   <a href="https://github.com/codereyinish/FoodChatbot/graphs/contributors">View all contributors →</a>
 </p>
 </details>
 
 ---
 
-## License
+## 🎗 License
 
-Foodchatbot.git is protected under the [LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
+[MIT-License](LICENSE)
 
 ---
+## 🙏 Acknowledgments
 
-## Acknowledgments
+This project was built with the help, guidance, and inspiration from amazing resources and people:
 
-- Credit `contributors`, `inspiration`, `references`, etc.
+- 🎥 [**Dhaval Patel**](https://github.com/codebasics) — for the incredible [YouTube tutorial](https://youtu.be/2e5pQqBvGco?si=ZvkRKMfRrLTjg5DG) that guided the foundation of this chatbot project.
+
+- ☕ Friends & collaborators who supported the idea and development of **FoodChatbot**.
+
+> 💬 If you want to be part of this journey of building a **Chatbot Developer Agency**, you’re welcome to **DM me** and contribute 🤝
 
 <div align="right">
-
+	
 [![][back-to-top]](#top)
-
+	
 </div>
+
 
 
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square
