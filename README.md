@@ -1,10 +1,12 @@
-
 <!-- HEADER STYLE: CLASSIC -->
 <p align="center">
+  <img 
+    src="https://github.com/codereyinish/FoodChatbot/blob/main/assets/khajaG_pic.png" 
+    alt="KhajaG Logo" 
+    style="width: 300px; border-radius: 25px;"
+  >
+</p>
 
- <img src="https://github.com/codereyinish/FoodChatbot/blob/main/assets/ChatGPT Image Oct 27, 2025 at 12_07_26 AM.png" width="300" alt="project-logo" style="border-radius: 15px; background-color: black; padding: 10px;">
-
-<p align="center">
     <h1 align="center">Not an ordinary chatbot</h1>
 </p>
 <p align="center">
@@ -77,8 +79,11 @@ The system connects Dialogflow intents to a FastAPI backend through a secure ngr
     │   ├── README.md
     │   ├── backup
     │   └── schema.sql
+    ├── chatbot_setup
+    │   └── KhajaG_dialogflow.zip
     ├── environment.yml
     └── requirements.txt
+
 ```
 
 ### 🧠 Modules
@@ -99,12 +104,32 @@ The system connects Dialogflow intents to a FastAPI backend through a secure ngr
 				</tr>
 			</thead>
 				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot.git/blob/master/requirements.txt'>requirements.txt</a></b></td>
+					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/requirements.txt'>requirements.txt</a></b></td>
 					<td style='padding: 8px;'>Define project dependencies in requirements.txt for seamless package management.</td>
 				</tr>
 				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot.git/blob/master/environment.yml'>environment.yml</a></b></td>
+					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/environment.yml'>environment.yml</a></b></td>
 					<td style='padding: 8px;'>- Define the project environment requirements using the provided <code>environment.yml</code> file<br>- Specify dependencies like Python 3.11, FastAPI, and MySQL connector<br>- Ensure the necessary packages are installed for the chatbot functionality to run smoothly.</td>
+				</tr>
+			</table>
+		</blockquote>
+	</details>
+	<!-- chatbot_setup Submodule -->
+	<details>
+		<summary><b>chatbot_setup</b></summary>
+		<blockquote>
+			<div class='directory-path' style='padding: 8px 0; color: #666;'>
+				<code><b>⦿ chatbot_setup</b></code>
+			<table style='width: 100%; border-collapse: collapse;'>
+			<thead>
+				<tr style='background-color: #f8f9fa;'>
+					<th style='width: 30%; text-align: left; padding: 8px;'>File Name</th>
+					<th style='text-align: left; padding: 8px;'>Summary</th>
+				</tr>
+			</thead>
+				<tr style='border-bottom: 1px solid #eee;'>
+					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/chatbot_setup/KhajaG_dialogflow.zip'>KhajaG_dialogflow.zip</a></b></td>
+					<td style='padding: 8px;'>- Exported <code>Dialogflow ES</code> agent used for the KhajaG chatbot<br>- Includes intents, entities, training phrases, and fulfillment settings<br>- Can be imported directly into Dialogflow Console to replicate the chatbot.</td>
 				</tr>
 			</table>
 		</blockquote>
@@ -123,7 +148,7 @@ The system connects Dialogflow intents to a FastAPI backend through a secure ngr
 				</tr>
 			</thead>
 				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot.git/blob/master/database/schema.sql'>schema.sql</a></b></td>
+					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/database/schema.sql'>schema.sql</a></b></td>
 					<td style='padding: 8px;'>- Define database schema for menu items, orders, and order tracking<br>- Implement triggers to calculate total price for orders and assign status for order tracking upon insertion.</td>
 				</tr>
 			</table>
@@ -141,11 +166,11 @@ The system connects Dialogflow intents to a FastAPI backend through a secure ngr
 						</tr>
 					</thead>
 						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot.git/blob/master/database/backup/foodDatabase_full_dump_v2_20251016.sql'>foodDatabase_full_dump_v2_20251016.sql</a></b></td>
+							<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/database/backup/foodDatabase_full_dump_v2_20251016.sql'>foodDatabase_full_dump_v2_20251016.sql</a></b></td>
 							<td style='padding: 8px;'>- Generate a SQL dump file containing tables for menu items, order tracking, and orders<br>- Includes table structures and sample data for each table<br>- Triggers are defined to calculate total prices and fill order statuses automatically<br>- Additionally, a stored procedure is provided to insert order items based on order ID, food item name, and quantity.</td>
 						</tr>
 						<tr style='border-bottom: 1px solid #eee;'>
-							<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot.git/blob/master/database/backup/foodDatabase_full_dump_v1_20251016.sql'>foodDatabase_full_dump_v1_20251016.sql</a></b></td>
+							<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/database/backup/foodDatabase_full_dump_v1_20251016.sql'>foodDatabase_full_dump_v1_20251016.sql</a></b></td>
 							<td style='padding: 8px;'>- Generate a SQL dump file containing tables for menu items, order tracking, and orders<br>- Includes table structures and sample data for menu items and orders<br>- Implements triggers and procedures for calculating total prices and inserting order items<br>- The file serves as a comprehensive snapshot of the database schema and initial data for the project.</td>
 						</tr>
 					</table>
@@ -167,15 +192,15 @@ The system connects Dialogflow intents to a FastAPI backend through a secure ngr
 				</tr>
 			</thead>
 				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot.git/blob/master/app/dbOperations.py'>dbOperations.py</a></b></td>
+					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/app/dbOperations.py'>dbOperations.py</a></b></td>
 					<td style='padding: 8px;'>- Manage database operations for orders, including inserting items, retrieving order IDs, calculating total prices, validating tracking IDs, and extracting saved orders<br>- Utilizes MySQL connection and error handling to ensure data integrity.</td>
 				</tr>
 				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot.git/blob/master/app/generichelper.py'>generichelper.py</a></b></td>
+					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/app/generichelper.py'>generichelper.py</a></b></td>
 					<td style='padding: 8px;'>- Generate a fulfillment message for an order, including item quantities<br>- Remove items from an order based on session ID<br>- Validate session ID and retrieve the order<br>- Check if an item is in the order list<br>- Convert a list to a string<br>- Derive a track ID from the output context.</td>
 				</tr>
 				<tr style='border-bottom: 1px solid #eee;'>
-					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot.git/blob/master/app/main.py'>main.py</a></b></td>
+					<td style='padding: 8px;'><b><a href='https://github.com/codereyinish/FoodChatbot/blob/master/app/main.py'>main.py</a></b></td>
 					<td style='padding: 8px;'>- Implement a FastAPI-based backend for a food ordering chatbot<br>- Functions handle adding, removing, resetting orders, displaying carts, completing orders, tracking orders, and displaying tracked items<br>- The code interacts with a database for order storage and retrieval<br>- The main file, <code>main.py</code>, serves as the webhook handler for processing user requests and intents.</td>
 				</tr>
 			</table>
@@ -183,7 +208,7 @@ The system connects Dialogflow intents to a FastAPI backend through a secure ngr
 	</details>
 </details>
 
----
+
 
 ## 🚀 Getting Started
 
@@ -251,7 +276,29 @@ Build **FoodChatbot** from the source and set up the environment step by step �
 
     > 💡 **Tip:** Keep your `.env` file secure and never commit it to GitHub.
 
-5. **Set Up Ngrok (Optional for Webhooks) 🌐**
+---
+
+5. **Import the Dialogflow Agent 🤖**
+
+   - Go to [Dialogflow Console](https://dialogflow.cloud.google.com).
+   - Create a **new agent** (or use an existing one).
+   - Click the ⚙️ **gear icon** next to the agent name → go to **Export and Import**.
+   - Choose **“Import from ZIP”** and upload:
+     ```
+     chatbot_setup/KhajaG_dialogflow.zip
+     ```
+   - Once imported, all intents, entities, and fulfillment settings will be ready to use.
+   - In Dialogflow → **Fulfillment**, set your webhook URL to:
+     ```
+     https://<your-ngrok-or-cloud-run-url>/webhook
+     ```
+   - Enable the webhook for all required intents.
+
+> 📝 This step makes your chatbot respond exactly like the original KhajaG setup.
+
+---
+
+6. **Set Up Ngrok (Optional for Webhooks) 🌐**
 
     - Download and install [ngrok](https://ngrok.com)  
     - Authenticate your ngrok account:

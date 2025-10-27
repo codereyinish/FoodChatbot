@@ -2,3 +2,6 @@
 Sqlpract.py
 __pycache__/
 .env
+../.readmeai.toml
+../.zshrc
+../md
