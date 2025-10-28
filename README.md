@@ -1,4 +1,4 @@
-<!-- HEADER STYLE: CLASSIC -->
+<!-- HEADER STYLE CLASSIC -->
 <p align="center">
   <img 
     src="https://github.com/codereyinish/FoodChatbot/blob/main/assets/khajaG_pic.png" 
